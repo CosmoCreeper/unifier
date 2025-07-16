@@ -86,11 +86,7 @@ async def on_ready():
     global server_id
 
     print(f'\x1b[33;1mIs {bot.user.name} ({bot.user.id}) the correct bot? (y/n)\x1b[0m')
-    answer = input().lower()
-
-    if not answer == 'y':
-        print(f'\x1b[31;1mAborting.\x1b[0m')
-        sys.exit(1)
+    answer = 'y'
 
     print(f'\x1b[36;1mAttempting to DM user {user_id}...\x1b[0m')
 
@@ -105,38 +101,8 @@ async def on_ready():
         if not server_id == 0:
             break
 
-    available = 10
-    tries = 0
-
-    while True:
-        try:
-            await user.send('If you can see this message, please return to the console, then type "y".')
-            break
-        except:
-            tries += 1
-
-            if tries >= available:
-                print(f'\x1b[31;1mCould not DM user after {available} attempts, aborting.\x1b[0m')
-                sys.exit(1)
-            if user:
-                print(f'\x1b[33;1mCould not DM user. Please enable your DMs for a server you and the bot share.\x1b[0m')
-            else:
-                print(f'\x1b[33;1mCould not find user. Please add the bot to a server you are in.\x1b[0m')
-                print(f'Use this link to add the bot: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=537259008&scope=bot')
-            print(f'\x1b[33;1mTrying again in 30 seconds, {available-tries} tries remaining. Press Ctrl+C to abort.\x1b[0m')
-
-            try:
-                await asyncio.sleep(30)
-            except:
-                print(f'\x1b[31;1mAborting.\x1b[0m')
-                sys.exit(1)
-
     print(f'\x1b[33;1mDid you receive a DM from the bot? (y/n)\x1b[0m')
-    answer = input().lower()
-
-    if not answer == 'y':
-        print(f'\x1b[31;1mAborting.\x1b[0m')
-        sys.exit(1)
+    answer = 'y'
 
     print('\x1b[36;1mOwner verified successfully, closing bot.\x1b[0m')
     await bot.close()
@@ -147,7 +113,7 @@ print('\x1b[33;1mTo copy your ID, go to your Discord settings, then Advanced, th
 
 while True:
     try:
-        user_id = int(input())
+        user_id = os.environ.get('user-id')
         break
     except KeyboardInterrupt:
         print('\x1b[31;49mAborted.\x1b[0m')
@@ -164,7 +130,7 @@ print('\x1b[31;49mFor security reasons, the installer will hide the input.\x1b[0
 if ptero_support:
     print(f'\x1b[36;1mPlease enter your bot token using the console input.\x1b[0m')
 
-token = getpass.getpass('Token: ')
+token = os.environ.get('token')
 
 encryption_password = ''
 
@@ -177,7 +143,7 @@ print('\x1b[31;49mFor security reasons, the installer will hide the input.\x1b[0
 if ptero_support:
     print(f'\x1b[36;1mPlease enter your encryption password using the console input.\x1b[0m')
 
-encryption_password = getpass.getpass()
+encryption_password = os.environ.get('encryption-key')
 
 print('\x1b[36;1mStarting bot...\x1b[0m')
 
