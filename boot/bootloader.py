@@ -239,7 +239,7 @@ if not '.install.json' in os.listdir() or reinstall or depinstall:
                 print(f'\n\x1b[33;1mWhich installation option would you like to install? (0-{len(install_options)-1})\x1b[0m')
 
                 try:
-                    install_option = int(input())
+                    install_option = 2
 
                     if install_option < 0 or install_option >= len(install_options):
                         raise ValueError()
@@ -357,17 +357,7 @@ if not '.install.json' in os.listdir() or reinstall or depinstall:
             print(f'- Installation option: {install_option}')
             print(f'- Install directory: {os.getcwd()}')
             print(f'- Python command/binary: {binary}\n')
-            print('\x1b[33;1mProceed with installation? (y/n)\x1b[0m')
-
-            try:
-                answer = input().lower()
-            except:
-                print(f'\x1b[31;1mAborting.\x1b[0m')
-                sys.exit(1)
-
-            if not answer == 'y':
-                print(f'\x1b[31;1mAborting.\x1b[0m')
-                sys.exit(1)
+            
         else:
             try:
                 with open('.install.json') as file:
@@ -403,15 +393,6 @@ if clear_tokens:
     print('\x1b[33;1mYou should only clear your tokens if you forgot your password.\x1b[0m')
     print('\x1b[33;1mThis process is irreversible. Once it\'s done, there\'s no going back!\x1b[0m')
     print()
-    print('\x1b[33;1mProceed anyways? (y/n)\x1b[0m')
-
-    try:
-        confirm = input().lower()
-        if not confirm == 'y':
-            raise ValueError()
-    except:
-        print('\x1b[31;1mAborting.\x1b[0m')
-        sys.exit(1)
 
     encryption_password = getpass.getpass('New password: ')
     confirm_password = getpass.getpass('Confirm new password: ')
@@ -460,7 +441,7 @@ while True:
         # choice is set but not the password, likely due to wrong password
         if ptero_support:
             print(f'\x1b[36;1mPlease enter your encryption password using the console input.\x1b[0m')
-        encryption_password = str(getpass.getpass('Password: '))
+        encryption_password = os.environ.get('encryption-key')
         os.environ['UNIFIER_ENCPASS'] = str(encryption_password)
     elif not choice is None:
         # choice is set and password is correct
